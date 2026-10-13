@@ -1,0 +1,10 @@
+import type { TrackingService } from "@/server/shopee/tracking";
+import type { CommissionService } from "@/server/shopee/commissions";
+export type Product = Awaited<ReturnType<TrackingService["products"]>>[number];
+export type Tracking = Awaited<ReturnType<TrackingService["list"]>>[number];
+export type TrackingDetail = Awaited<ReturnType<TrackingService["detail"]>>;
+export type CommissionData = Awaited<ReturnType<CommissionService["list"]>>;
+export type Commission = CommissionData["rows"][number];
+export type Review = Awaited<ReturnType<CommissionService["reviews"]>>[number];
+export type Batch = Awaited<ReturnType<CommissionService["imports"]>>[number];
+export type CommissionDetail = Awaited<ReturnType<CommissionService["detail"]>>;

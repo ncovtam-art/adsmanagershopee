@@ -1,0 +1,51 @@
+name: affiliate-command-center
+services:
+  database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?Chạy npm run env:init trước}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Chạy npm run env:init trước}
+      POSTGRES_DB: ${POSTGRES_DB:-command_center}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+  test-database:
+    image: postgres:17-alpine
+    profiles: [test]
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?Chạy npm run env:init trước}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Chạy npm run env:init trước}
+      POSTGRES_DB: command_center_test
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - test_database_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+  redis:
+    image: redis:7-alpine
+    command: [redis-server, --appendonly, "yes", --maxmemory-policy, noeviction]
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+volumes:
+  database_data:
+  test_database_data:
+  redis_data:

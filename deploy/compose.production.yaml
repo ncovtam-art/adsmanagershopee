@@ -1,0 +1,44 @@
+# External PostgreSQL/Redis and HTTPS reverse proxy are required. No default credentials.
+name: aacc-production
+x-app: &app
+  image: ${AACC_IMAGE:?Build and set AACC_IMAGE first}
+  env_file: ${AACC_ENV_FILE:?Set absolute secure env file path}
+  restart: unless-stopped
+  init: true
+  read_only: true
+  tmpfs:
+    - /tmp:size=512m,mode=1777
+  volumes:
+    - media:/workspace/adsmanagershopee/.cache
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+  logging:
+    driver: json-file
+    options:
+      max-size: 10m
+      max-file: '3'
+services:
+  web:
+    <<: *app
+    ports:
+      - '127.0.0.1:3000:3000'
+  insights:
+    <<: *app
+    command: [npm, run, worker:insights]
+    healthcheck: {disable: true}
+  publisher:
+    <<: *app
+    command: [npm, run, worker:publisher]
+    healthcheck: {disable: true}
+  ads:
+    <<: *app
+    command: [npm, run, worker:ads]
+    healthcheck: {disable: true}
+  care:
+    <<: *app
+    command: [npm, run, worker:care]
+    healthcheck: {disable: true}
+volumes:
+  media:

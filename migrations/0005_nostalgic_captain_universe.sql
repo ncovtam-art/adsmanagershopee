@@ -1,0 +1,1 @@
+ALTER TABLE "publish_jobs" ADD COLUMN "end_offset" integer DEFAULT 0 NOT NULL;

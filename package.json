@@ -1,0 +1,65 @@
+{
+  "name": "affiliate-ads-command-center",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0",
+    "build": "next build --webpack",
+    "start": "next start --hostname 0.0.0.0",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/unit/*.test.ts",
+    "test:integration": "tsx --env-file-if-exists=.env --test --test-concurrency=1 tests/integration/*.test.ts",
+    "test:e2e": "playwright test",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx --env-file-if-exists=.env scripts/migrate.ts",
+    "db:status": "tsx --env-file-if-exists=.env scripts/migrate.ts --status",
+    "owner:create": "tsx --env-file-if-exists=.env scripts/create-owner.ts",
+    "env:init": "node scripts/init-env.mjs",
+    "db:up": "docker compose up -d --wait database",
+    "db:test:up": "docker compose --profile test up -d --wait test-database",
+    "db:backup": "tsx --env-file-if-exists=.env scripts/database-backup.ts backup",
+    "db:restore": "tsx --env-file-if-exists=.env scripts/database-backup.ts restore",
+    "worker:insights": "tsx --env-file-if-exists=.env scripts/insights-worker.ts",
+    "queue:up": "docker compose up -d --wait redis",
+    "worker:publisher": "tsx --env-file-if-exists=.env scripts/publisher-worker.ts",
+    "worker:ads": "tsx --env-file-if-exists=.env scripts/ads-worker.ts",
+    "worker:care": "tsx --env-file-if-exists=.env scripts/care-worker.ts",
+    "media:backup": "tsx --env-file-if-exists=.env scripts/media-backup.ts backup",
+    "media:restore": "tsx --env-file-if-exists=.env scripts/media-backup.ts restore",
+    "maintenance": "tsx --env-file-if-exists=.env scripts/maintenance.ts"
+  },
+  "dependencies": {
+    "bullmq": "6.3.13",
+    "csv-parse": "7.0.3",
+    "drizzle-orm": "0.45.4",
+    "ioredis": "6.0.0",
+    "lucide-react": "1.55.0",
+    "next": "16.4.0",
+    "pg": "8.23.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "read-excel-file": "6.0.3",
+    "zod": "4.3.6",
+    "tsx": "4.23.15"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "@types/node": "^24.0.0",
+    "@types/pg": "^8.15.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "drizzle-kit": "0.31.11",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "16.4.0",
+    "typescript": "5.9.3"
+  },
+  "overrides": {
+    "@esbuild-kit/core-utils": {
+      "esbuild": "0.25.12"
+    }
+  }
+}
