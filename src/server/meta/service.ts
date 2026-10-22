@@ -16,6 +16,7 @@ import { requirePermission, type Actor } from "../auth/policy";
 import { hashToken } from "../auth/password";
 import { AppError } from "../http/errors";
 import { seal, unseal, encryptionKey } from "./crypto";
+import { metaConfigurationIssues } from "./config-status";
 import { metaConfig, MetaGateway, requiredScopes } from "./gateway";
 import { MockMetaProvider } from "./mock";
 import { accessibleIds, requireResource } from "./access";
@@ -64,6 +65,7 @@ export function providerFor(source: Source): MetaProvider {
 }
 export const gateway = new MetaGateway();
 export function connectionConfig() {
+  const issues = metaConfigurationIssues();
   let liveReady = false;
   try {
     metaConfig();
@@ -73,7 +75,8 @@ export function connectionConfig() {
     /* Trả trạng thái cấu hình, không trả bí mật. */
   }
   return {
-    liveReady,
+    liveReady: liveReady && issues.length === 0,
+    issues,
     mockEnabled: mockEnabled(),
     encryptionReady: Boolean(
       process.env.TOKEN_ENCRYPTION_KEY?.match(/^[a-f0-9]{64}$/i),

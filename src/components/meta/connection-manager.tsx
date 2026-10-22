@@ -120,8 +120,19 @@ export function ConnectionManager() {
           <>
             {!state.config.liveReady && (
               <div className="notice warning">
-                Chưa đủ cấu hình Meta App ở máy chủ. Xem hướng dẫn
-                META_CONNECTION.md; không nhập mật khẩu Facebook vào ứng dụng.
+                <p>Máy chủ chưa sẵn sàng kết nối Facebook:</p>
+                <ul>
+                  {state.config.issues.map((issue) => (
+                    <li key={issue.name}>
+                      <code>{issue.name}</code>: {issue.status === "MISSING" ? "Chưa cấu hình" : "Sai định dạng hoặc không khớp"}. {issue.message}
+                    </li>
+                  ))}
+                </ul>
+                <p>
+                  Sửa file cấu hình riêng trong Codespaces, không sửa .env.example.
+                  Biến của tiến trình có ưu tiên cao hơn các file .env*. Khởi động
+                  lại ứng dụng sau khi lưu. Không gửi secrets vào chat hoặc Git.
+                </p>
               </div>
             )}
             <div className="toolbar">
