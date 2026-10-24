@@ -131,6 +131,8 @@ test("Verification requires matching parents/status/content with unordered targe
 });
 test("Live Marketing create uses official account edge, no retry after timeout and checks returned ID", async () => {
   const old = {
+    DRY_RUN: process.env.DRY_RUN,
+    META_WRITES_ENABLED: process.env.META_WRITES_ENABLED,
     META_APP_ID: process.env.META_APP_ID,
     META_APP_SECRET: process.env.META_APP_SECRET,
     META_GRAPH_VERSION: process.env.META_GRAPH_VERSION,
@@ -138,6 +140,8 @@ test("Live Marketing create uses official account edge, no retry after timeout a
     APP_ORIGIN: process.env.APP_ORIGIN,
   };
   Object.assign(process.env, {
+    DRY_RUN: "false",
+    META_WRITES_ENABLED: "true",
     META_APP_ID: "123",
     META_APP_SECRET: "unit-test-secret",
     META_GRAPH_VERSION: "v99.0",

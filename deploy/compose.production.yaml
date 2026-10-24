@@ -26,18 +26,22 @@ services:
       - '127.0.0.1:3000:3000'
   insights:
     <<: *app
+    profiles: [workers]
     command: [npm, run, worker:insights]
     healthcheck: {disable: true}
   publisher:
     <<: *app
+    profiles: [workers]
     command: [npm, run, worker:publisher]
     healthcheck: {disable: true}
   ads:
     <<: *app
+    profiles: [workers]
     command: [npm, run, worker:ads]
     healthcheck: {disable: true}
   care:
     <<: *app
+    profiles: [workers]
     command: [npm, run, worker:care]
     healthcheck: {disable: true}
 volumes:

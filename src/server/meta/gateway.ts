@@ -1,5 +1,6 @@
 import { createHmac, createHash } from "node:crypto";
 import { AppError } from "../http/errors";
+import { assertMetaWritesEnabled } from "./write-policy";
 import { insightSchema, type Insight } from "../analytics/engine";
 import type {
   MetaProvider,
@@ -66,6 +67,7 @@ export class MetaGateway implements MetaProvider {
     params: Record<string, string> = {},
     mutation?: { body: FormData; video: boolean },
   ): Promise<MetaObject> {
+    if (mutation) assertMetaWritesEnabled();
     const config = metaConfig();
     if (Date.now() < this.blockedUntil)
       throw new AppError(

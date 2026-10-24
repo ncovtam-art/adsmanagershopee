@@ -127,6 +127,8 @@ test("Official pause adapter verifies account/parents, sends only PAUSED and doe
   const old = {
     ...Object.fromEntries(
       [
+        "DRY_RUN",
+        "META_WRITES_ENABLED",
         "META_APP_ID",
         "META_APP_SECRET",
         "META_GRAPH_VERSION",
@@ -136,6 +138,8 @@ test("Official pause adapter verifies account/parents, sends only PAUSED and doe
     ),
   };
   Object.assign(process.env, {
+    DRY_RUN: "false",
+    META_WRITES_ENABLED: "true",
     META_APP_ID: "123",
     META_APP_SECRET: "test-secret",
     META_GRAPH_VERSION: "v99.0",

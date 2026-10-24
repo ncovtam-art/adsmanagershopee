@@ -158,6 +158,8 @@ test("Redis URL test guard tách database và không bỏ TLS verify", () => {
 });
 function config() {
   Object.assign(process.env, {
+    DRY_RUN: "false",
+    META_WRITES_ENABLED: "true",
     META_APP_ID: "123",
     META_APP_SECRET: "publisher-unit-secret",
     META_GRAPH_VERSION: "v23.0",

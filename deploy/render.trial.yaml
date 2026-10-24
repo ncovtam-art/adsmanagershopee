@@ -1,0 +1,53 @@
+# REVIEW ONLY: provisioning this service/disk may incur Render charges.
+# No service is created by committing this file. No worker or cron is defined.
+services:
+  - type: web
+    name: aacc-internal-trial
+    runtime: docker
+    plan: starter
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    autoDeploy: false
+    domains:
+      - trial.minhtam.click
+    disk:
+      name: aacc-private-media
+      mountPath: /workspace/adsmanagershopee/.cache
+      sizeGB: 10
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: APP_ORIGIN
+        value: https://trial.minhtam.click
+      - key: META_REDIRECT_URI
+        value: https://trial.minhtam.click/api/meta/callback
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: DRY_RUN
+        value: "true"
+      - key: META_WRITES_ENABLED
+        value: "false"
+      - key: META_AUTO_ACTIVATE
+        value: "false"
+      - key: AI_LIVE_ENABLED
+        value: "false"
+      - key: META_MOCK_ENABLED
+        value: "false"
+      - key: VIDEO_STORAGE_DIR
+        value: /workspace/adsmanagershopee/.cache/video-storage
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: TOKEN_ENCRYPTION_KEY
+        sync: false
+      - key: META_APP_ID
+        sync: false
+      - key: META_APP_SECRET
+        sync: false
+      - key: META_GRAPH_VERSION
+        sync: false
